@@ -1,5 +1,6 @@
 #pragma once
 #include "..\MathLib\Point4.h"
+#include "..\MathLib\Matrix4.h"
 
 struct Color
 {
@@ -24,6 +25,9 @@ namespace Rasterizer
 	void DrawHorizontalLine(const Point4& p1, const Point4& p2, const Color col);
 	void DrawDiagonalLine(const Point4& p1, const Point4& p2, const Color col);
 	//Draw Triangle
+
+	Point4 ModelToView(const Matrix4& viewMtx, const Matrix4& modelMtx, const Matrix4& persepcMtx, const Point4& point);
+
 
 	//Draw Objects
 	void DrawObjects(int wWidth, int wHeight);

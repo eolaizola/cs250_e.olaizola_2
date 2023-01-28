@@ -1,6 +1,5 @@
 #include "Rasterizer.h"
 #include "..\MathLib/MathUtilities.h"
-#include "..\MathLib/Matrix4.h"
 #include "..\FrameBuffer.h"
 #include "..\cs250Parser.h"
 
@@ -150,8 +149,8 @@ void Rasterizer::DrawDiagonalLine(const Point4& p1, const Point4& p2, const Colo
 
 void Rasterizer::DrawObjects(int wWidth, int wHeight)
 {
-	std::vector<Color> col;
-	Color temp(0,0,0);
+	Color col(0,0,0);
+
 	Matrix4 rot;
 	Matrix4 mtx;
 	Matrix4 scale;
@@ -177,40 +176,46 @@ void Rasterizer::DrawObjects(int wWidth, int wHeight)
 	for(; shap != CS250Parser::shapes.end(); shap++, obj++)
 	{
 		mtx.Identity();
-		col.clear();
 
+		//Take the transform matrix of the object
 		scale.ScaleMatrix((*obj).sca.x, (*obj).sca.y, (*obj).sca.z);
 		trans.TranslationMatrix((*obj).pos.x, (*obj).pos.y, (*obj).pos.z);
 
 		mtx = trans * rot * scale;
 
-		int j = 1;
-		for(int i = 0; j < (*shap).vertices.size() - 1; i++, j++)
+		int j = 0;
+		for(auto it = (*shap).faces.begin(); it != (*shap).faces.end(); it++, j++)
 		{
-			//Model to world
-			point1 = mtx * (*shap).vertices[i];
-			point2 = mtx * (*shap).vertices[j];
+			point1 = (*shap).vertices[(*it).indices[0]];
+			point2 = (*shap).vertices[(*it).indices[1]];
+			point3 = (*shap).vertices[(*it).indices[2]];
 
-			//World to perspective
-			point1 = (pers * point1) / (-point1.z);
-			point2 = (pers * point2) / (-point2.z);
+			point1 = ModelToView(view, mtx, pers, point1);
+			point2 = ModelToView(view, mtx, pers, point2);
+			point3 = ModelToView(view, mtx, pers, point3);
 
-			point1 = view * point1;
-			point2 = view * point2;
+			col.r = (*shap).colors[j].r;
+			col.g = (*shap).colors[j].g;
+			col.b = (*shap).colors[j].b;
 
-			DrawLine(point1, point2, temp);
+			DrawLine(point1, point2, col);
+			DrawLine(point2, point3, col);
+			DrawLine(point3, point1, col);
 		}
-
-		//Model to world
-		point1 = mtx * (*shap).vertices[j];
-		point2 = mtx * (*shap).vertices[0];
-
-		//World to perspective
-		point1 = (pers * point1) / (-point1.z);
-		point2 = (pers * point2) / (-point2.z);
-
-		point1 = view * point1;
-		point2 = view * point2;
-		DrawLine(point1, point2, temp);
 	}
+}
+
+
+Point4 Rasterizer::ModelToView(const Matrix4& viewMtx, const Matrix4& modelMtx, const Matrix4& persepcMtx, const Point4& point)
+{
+	Point4 mPoint;
+	//Model to world
+	mPoint = modelMtx * point;
+	
+	//World to perspective
+	mPoint = (persepcMtx * mPoint) / (-mPoint.z);
+	
+	mPoint = viewMtx * mPoint;
+
+	return mPoint;
 }
