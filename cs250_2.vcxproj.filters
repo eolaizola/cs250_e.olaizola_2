@@ -19,6 +19,12 @@
     <Filter Include="MathLib">
       <UniqueIdentifier>{9e1c3206-19f0-402d-8b72-b553a7cf5020}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Graphics">
+      <UniqueIdentifier>{9a5dd401-68e4-4b34-9c9f-f736960594c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Graphics\Rasterizer">
+      <UniqueIdentifier>{606ad2bd-b7d6-4188-ae48-b040c1b1aa04}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\FrameBuffer.cpp">
@@ -39,6 +45,9 @@
     <ClCompile Include="src\MathLib\Vector4.cpp">
       <Filter>MathLib</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\Rasterizer.cpp">
+      <Filter>src\Graphics\Rasterizer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\FrameBuffer.h">
@@ -58,6 +67,9 @@
     </ClInclude>
     <ClInclude Include="src\MathLib\Vector4.h">
       <Filter>MathLib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Rasterizer.h">
+      <Filter>src\Graphics\Rasterizer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
