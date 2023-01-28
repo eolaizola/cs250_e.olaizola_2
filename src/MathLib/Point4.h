@@ -47,6 +47,7 @@ class Point4
         Point4 operator+ (const Vector4& rhs) const;
         Point4 operator-(const Vector4 & rhs) const;
         Point4 operator/(const float & rhs) const;
+        Point4& operator*(const float rhs);
         // Same as previous two operators, just modifies the original instead of returning a
         // copy
         Point4& operator+=(const Vector4& rhs);

@@ -5,6 +5,17 @@
 #include "Vector4.h"
 #include <stdio.h> // printf
 
+
+namespace Utils
+{
+    //Size for the loops
+    const int size = 4;
+    const int totalSize = 16;
+
+    float Determinant3x3(float mm00, float mm01, float mm02, float mm10, float mm11, float mm12, float mm20, float mm21, float mm22);
+    int Round(float x);
+}
+
 class Matrix4
 {
   public:
@@ -74,6 +85,10 @@ class Matrix4
 
     // Builds the identity matrix
     void Identity(void);
+
+    void RotationMatrix(float x, float y, float z);
+    void TranslationMatrix(float x, float y, float z);
+    void ScaleMatrix(float x, float y, float z);
 
     // Already implemented, simple print function
     void Print(void) const

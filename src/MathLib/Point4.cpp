@@ -134,6 +134,15 @@ Point4 Point4::operator/(const float& rhs) const
 	return Point4(x/rhs, y/rhs, z/rhs, w/rhs);
 }
 
+Point4& Point4::operator*(const float rhs)
+{
+	x *= rhs;
+	y *= rhs;
+	z *= rhs;
+	w *= rhs;
+	return *this;
+}
+
 /*
 *
 * \brief Addition of a point and a vector

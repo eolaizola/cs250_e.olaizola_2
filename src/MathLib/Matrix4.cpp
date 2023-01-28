@@ -18,9 +18,6 @@ Creation date: 01/09/2023
 
 namespace Utils //Extra utils that can help
 {
-	//Size for the loops
-	const int size = 4;
-	const int totalSize = 16;
 
 	/*
     *
@@ -41,6 +38,19 @@ namespace Utils //Extra utils that can help
 		//Compute the value of the determimant
 		float total = diag1 + diag2 + diag3 - diag4 - diag5 - diag6;
 		return total;
+	}
+
+	int Round(float x)
+	{
+		int integer = x;
+		float fl = x - integer;
+
+		if (fl < 0.5f)
+			x = integer;
+		else
+			x = ++integer;
+
+		return x;
 	}
 }
 
@@ -490,4 +500,23 @@ void Matrix4::Identity(void)
 				m[i][j] = 0;
 		}
 	}
+}
+
+void Matrix4::RotationMatrix(float x, float y, float z)
+{
+
+}
+
+void Matrix4::TranslationMatrix(float x, float y, float z)
+{
+	m[0][3] = x;
+	m[1][3] = y;
+	m[2][3] = z;
+}
+
+void Matrix4::ScaleMatrix(float x, float y, float z)
+{
+	m[0][0] = x;
+	m[1][1] = y;
+	m[2][2] = z;
 }

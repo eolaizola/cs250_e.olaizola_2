@@ -2,6 +2,7 @@
 
 #include "FrameBuffer.h"
 #include "cs250Parser.h"
+#include "Graphics/Rasterizer.h"
 
 int main()
 {
@@ -17,7 +18,7 @@ int main()
     sf::Texture texture;
     sf::Sprite  sprite;
     texture.create(WIDTH, HEIGHT);
-    image.create(WIDTH, HEIGHT, sf::Color::Black);
+    image.create(WIDTH, HEIGHT, sf::Color::White);
 
     CS250Parser::LoadDataFromFile("src/input.txt");
 
@@ -25,6 +26,8 @@ int main()
     sf::Clock clock;
     while (window.isOpen())
     {
+        FrameBuffer::Clear(sf::Color::White.r, sf::Color::White.g, sf::Color::White.b);
+        
         // Handle input
         sf::Event event;
         while (window.pollEvent(event))
@@ -46,29 +49,12 @@ int main()
         sf::Time elapsed = clock.getElapsedTime();
         int      time    = static_cast<int>(elapsed.asSeconds());
 
-        for (unsigned x = 0; x < WIDTH; x++)
-        {
-            for (unsigned y = 0; y < HEIGHT; y++)
-            {
-                if (time % 2 == 0)
-                {
-                    if (y % 50 < 25 && x % 50 < 25)
-                        FrameBuffer::SetPixel(x, y, 255, 0, 0);
-                    else
-                        FrameBuffer::SetPixel(x, y, 0, 255, 0);
-                }
-                else
-                {
-                    if (y % 50 < 25 && x % 50 < 25)
-                        FrameBuffer::SetPixel(x, y, 0, 255, 0);
-                    else
-                        FrameBuffer::SetPixel(x, y, 255, 0, 0);
-                }
-            }
-        }
+
+        Rasterizer::DrawObjects(WIDTH, HEIGHT);
 
         // Show image on screen
         FrameBuffer::ConvertFrameBufferToSFMLImage(image);
+
 
         texture.update(image);
         sprite.setTexture(texture);
