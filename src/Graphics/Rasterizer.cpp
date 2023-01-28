@@ -148,7 +148,7 @@ void Rasterizer::DrawDiagonalLine(const Point4& p1, const Point4& p2, const Colo
 	}
 }
 
-void Rasterizer::DrawObjects()
+void Rasterizer::DrawObjects(int wWidth, int wHeight)
 {
 	std::vector<Color> col;
 	Color temp(0,0,0);
@@ -157,9 +157,15 @@ void Rasterizer::DrawObjects()
 	Matrix4 scale;
 	Matrix4 trans;
 
+	Matrix4 pers;
+	Matrix4 view;
+
 	rot.Identity();
 	scale.Identity();
 	trans.Identity();
+
+	pers = CS250Parser::GetPerspectiveMatrix();
+	view = CS250Parser::GetViewportMatrix(wWidth, wHeight);
 
 	Point4 point1;
 	Point4 point2;
@@ -170,29 +176,41 @@ void Rasterizer::DrawObjects()
 
 	for(; shap != CS250Parser::shapes.end(); shap++, obj++)
 	{
-		//for(int i = 0; i < 3; i++)
-		//{
-		//	temp.r = (*shap).colors[i].r;
-		//	temp.g = (*shap).colors[i].g;
-		//	temp.b = (*shap).colors[i].b;
-		//	col.push_back(temp);
-		//}
+		mtx.Identity();
+		col.clear();
 
 		scale.ScaleMatrix((*obj).sca.x, (*obj).sca.y, (*obj).sca.z);
 		trans.TranslationMatrix((*obj).pos.x, (*obj).pos.y, (*obj).pos.z);
 
 		mtx = trans * rot * scale;
-		
-		point1 = (*shap).vertices[0] * 1000;
-		point2 = (*shap).vertices[1] * 1000;
-		point3 = (*shap).vertices[2] * 1000;
 
+		int j = 1;
+		for(int i = 0; j < (*shap).vertices.size() - 1; i++, j++)
+		{
+			//Model to world
+			point1 = mtx * (*shap).vertices[i];
+			point2 = mtx * (*shap).vertices[j];
+
+			//World to perspective
+			point1 = (pers * point1) / (-point1.z);
+			point2 = (pers * point2) / (-point2.z);
+
+			point1 = view * point1;
+			point2 = view * point2;
+
+			DrawLine(point1, point2, temp);
+		}
+
+		//Model to world
+		point1 = mtx * (*shap).vertices[j];
+		point2 = mtx * (*shap).vertices[0];
+
+		//World to perspective
+		point1 = (pers * point1) / (-point1.z);
+		point2 = (pers * point2) / (-point2.z);
+
+		point1 = view * point1;
+		point2 = view * point2;
 		DrawLine(point1, point2, temp);
-		DrawLine(point2, point3, temp);
-		DrawLine(point3, point1, temp);
-
-		mtx.Identity();
-		col.clear();
-		break;
 	}
 }

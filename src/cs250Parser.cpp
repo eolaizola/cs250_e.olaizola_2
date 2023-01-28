@@ -1,4 +1,6 @@
+#include <SFML/Graphics.hpp>
 #include "CS250Parser.h"
+#include "Graphics/Rasterizer.h"
 #include <iostream>
 #include <fstream>
 
@@ -215,4 +217,30 @@ void CS250Parser::UnloadData()
 
     if (!objects.size())
         std::cout << "Cleared...Now: " << objects.size() << " Objects" << std::endl;
+}
+
+Matrix4 CS250Parser::GetPerspectiveMatrix()
+{
+    Matrix4 mtx;
+    
+    mtx.ScaleMatrix(focal, focal, focal);
+    mtx.m[3][2] = -1;
+
+    return mtx;
+}
+
+Matrix4 CS250Parser::GetViewportMatrix(int wWidth, int wHeight)
+{
+    int vWidth = right - left;
+    int vHeight = top - bottom;
+
+    Matrix4 mtx;
+
+    mtx.m[0][0] = wWidth / vWidth;
+    mtx.m[0][3] = wWidth / 2;
+
+    mtx.m[1][1] = -wHeight / vHeight;
+    mtx.m[1][3] = wHeight / 2;
+
+    return mtx;
 }

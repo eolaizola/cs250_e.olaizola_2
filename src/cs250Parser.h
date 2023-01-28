@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MathLib/Point4.h"
+#include "MathLib/Matrix4.h"
 #include <string>
 #include <vector>
 
@@ -9,6 +10,8 @@ class CS250Parser
   public:
     static void LoadDataFromFile(const char * filename);
     static void UnloadData();
+    static Matrix4 GetPerspectiveMatrix();
+    static Matrix4 GetViewportMatrix(int wWidth, int wHeight);
 
     struct Face
     {

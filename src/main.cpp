@@ -27,7 +27,7 @@ int main()
     while (window.isOpen())
     {
         FrameBuffer::Clear(sf::Color::White.r, sf::Color::White.g, sf::Color::White.b);
-
+        
         // Handle input
         sf::Event event;
         while (window.pollEvent(event))
@@ -50,7 +50,7 @@ int main()
         int      time    = static_cast<int>(elapsed.asSeconds());
 
 
-        Rasterizer::DrawObjects();
+        Rasterizer::DrawObjects(WIDTH, HEIGHT);
 
         // Show image on screen
         FrameBuffer::ConvertFrameBufferToSFMLImage(image);

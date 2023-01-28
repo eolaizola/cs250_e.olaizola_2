@@ -25,5 +25,6 @@ namespace Rasterizer
 	void DrawDiagonalLine(const Point4& p1, const Point4& p2, const Color col);
 	//Draw Triangle
 
-	void DrawObjects();
+	//Draw Objects
+	void DrawObjects(int wWidth, int wHeight);
 };
