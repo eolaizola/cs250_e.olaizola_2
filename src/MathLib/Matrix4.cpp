@@ -504,7 +504,35 @@ void Matrix4::Identity(void)
 
 void Matrix4::RotationMatrix(float x, float y, float z)
 {
+	Matrix4 Rot_x;
+	Matrix4 Rot_y;
+	Matrix4 Rot_z;
 
+	Rot_x.Identity();
+	Rot_y.Identity();
+	Rot_z.Identity();
+
+	x = (x * Utils::pi) / 180;
+	y = (y * Utils::pi) / 180;
+	z = (z * Utils::pi) / 180;
+
+
+	Rot_x.m[1][1] = cos(x);
+	Rot_x.m[1][2] = -sin(x);
+	Rot_x.m[2][1] = sin(x);
+	Rot_x.m[2][2] = cos(x);
+
+	Rot_y.m[0][0] = cos(y);
+	Rot_y.m[2][0] = -sin(y);
+	Rot_y.m[2][2] = cos(y);
+	Rot_y.m[0][2] = sin(y);
+
+	Rot_z.m[0][0] = cos(z);
+	Rot_z.m[1][0] = sin(z);
+	Rot_z.m[0][1] = -sin(z);
+	Rot_z.m[1][1] = cos(z);
+
+	*this = Rot_x * Rot_y * Rot_z;
 }
 
 void Matrix4::TranslationMatrix(float x, float y, float z)

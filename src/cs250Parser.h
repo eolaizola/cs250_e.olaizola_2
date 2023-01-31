@@ -12,6 +12,7 @@ class CS250Parser
     static void UnloadData();
     static Matrix4 GetPerspectiveMatrix();
     static Matrix4 GetViewportMatrix(int wWidth, int wHeight);
+    static void UpdateObjects();
 
     struct Face
     {
@@ -51,6 +52,16 @@ class CS250Parser
         Vector4 sca;
 
         std::string parent;
+        Transform* mParent;
+
+        Matrix4 mRotation;
+        Matrix4 mScale;
+        Matrix4 mTranslation;
+
+        //some useful matrixes
+        Matrix4 mParentTransform;
+        Matrix4 mWorldTransform;
+        Matrix4 mSharedTransform;
     };
     static std::vector<Transform> objects;
 };

@@ -11,6 +11,7 @@ namespace Utils
     //Size for the loops
     const int size = 4;
     const int totalSize = 16;
+    const float pi = 3.141592653589f;
 
     float Determinant3x3(float mm00, float mm01, float mm02, float mm10, float mm11, float mm12, float mm20, float mm21, float mm22);
     int Round(float x);

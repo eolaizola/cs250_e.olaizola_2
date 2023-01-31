@@ -173,23 +173,26 @@ void Rasterizer::DrawObjects(int wWidth, int wHeight)
 	auto shap = CS250Parser::shapes.begin();
 	auto obj = CS250Parser::objects.begin();
 
-	for(; shap != CS250Parser::shapes.end(); shap++, obj++)
+	for(; obj != CS250Parser::objects.end(); obj++)
 	{
 		mtx.Identity();
 
-		//Take the transform matrix of the object
-		scale.ScaleMatrix((*obj).sca.x, (*obj).sca.y, (*obj).sca.z);
-		trans.TranslationMatrix((*obj).pos.x, (*obj).pos.y, (*obj).pos.z);
+		////Take the transform matrix of the object
+		//scale.ScaleMatrix((*obj).sca.x, (*obj).sca.y, (*obj).sca.z);
+		//trans.TranslationMatrix((*obj).pos.x, (*obj).pos.y, (*obj).pos.z);
+		//mtx = trans * scale;
 
-		mtx = trans * rot * scale;
+		mtx = (*obj).mWorldTransform;
 
 		int j = 0;
 		for(auto it = (*shap).faces.begin(); it != (*shap).faces.end(); it++, j++)
 		{
+			//Take the indices from the faces
 			point1 = (*shap).vertices[(*it).indices[0]];
 			point2 = (*shap).vertices[(*it).indices[1]];
 			point3 = (*shap).vertices[(*it).indices[2]];
 
+			//Ttransform model to viewport
 			point1 = ModelToView(view, mtx, pers, point1);
 			point2 = ModelToView(view, mtx, pers, point2);
 			point3 = ModelToView(view, mtx, pers, point3);
@@ -213,7 +216,10 @@ Point4 Rasterizer::ModelToView(const Matrix4& viewMtx, const Matrix4& modelMtx, 
 	mPoint = modelMtx * point;
 	
 	//World to perspective
-	mPoint = (persepcMtx * mPoint) / (-mPoint.z);
+	if (isZero(mPoint.z))
+		mPoint = (persepcMtx * mPoint);
+	else
+		mPoint = (persepcMtx * mPoint) / (-mPoint.z);
 	
 	mPoint = viewMtx * mPoint;
 

@@ -21,6 +21,7 @@ int main()
     image.create(WIDTH, HEIGHT, sf::Color::White);
 
     CS250Parser::LoadDataFromFile("src/input.txt");
+    CS250Parser::UpdateObjects();
 
     // Init the clock
     sf::Clock clock;
@@ -43,6 +44,7 @@ int main()
         {
             CS250Parser::UnloadData();
             CS250Parser::LoadDataFromFile("src/input.txt");
+            CS250Parser::UpdateObjects();
         }
 
         // Fill framebuffer

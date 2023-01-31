@@ -185,13 +185,24 @@ void CS250Parser::LoadDataFromFile(const char * filename)
 
                 in >> transform.parent;
 
+
+                transform.mRotation.Identity();
+                transform.mTranslation.Identity();
+                transform.mScale.Identity();
+
+                transform.mRotation.RotationMatrix(transform.rot.x, transform.rot.y, transform.rot.z);
+                transform.mScale.ScaleMatrix(transform.sca.x, transform.sca.y, transform.sca.z);
+                transform.mTranslation.TranslationMatrix(transform.pos.x, transform.pos.y, transform.pos.z);
+
+                transform.mSharedTransform = transform.mTranslation * transform.mRotation;
+                transform.mWorldTransform = transform.mSharedTransform * transform.mScale;
+
                 objects.push_back(transform);
                 in >> readStr;
             }
         }
         in >> readStr;
     }
-
 }
 
 void CS250Parser::UnloadData()
@@ -215,8 +226,12 @@ void CS250Parser::UnloadData()
     shapes.clear();
     objects.clear();
 
+    std::cout << std::endl;
+
     if (!objects.size())
         std::cout << "Cleared...Now: " << objects.size() << " Objects" << std::endl;
+    else
+        std::cout << "Error: " << objects.size() << " Some objects didn' unload correctly" << std::endl;
 }
 
 Matrix4 CS250Parser::GetPerspectiveMatrix()
@@ -243,4 +258,21 @@ Matrix4 CS250Parser::GetViewportMatrix(int wWidth, int wHeight)
     mtx.m[1][3] = wHeight / 2;
 
     return mtx;
+}
+
+void CS250Parser::UpdateObjects()
+{
+    for (auto child = objects.begin(); child != objects.end(); child++)
+    {
+        for(auto parent = objects.begin(); parent != objects.end(); parent++)
+        {
+            //If parent and child are found
+            if((*child).parent == (*parent).name)
+            {
+                (*child).mSharedTransform = (*parent).mSharedTransform * (*child).mTranslation * (*child).mRotation;
+                (*child).mWorldTransform = (*child).mSharedTransform * (*child).mScale;
+                break;
+            }
+        }
+    }
 }
