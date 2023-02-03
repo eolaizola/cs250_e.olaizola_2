@@ -15,6 +15,8 @@ namespace Utils
 
     float Determinant3x3(float mm00, float mm01, float mm02, float mm10, float mm11, float mm12, float mm20, float mm21, float mm22);
     int Round(float x);
+    int Ceiling(float x);
+    int Floor(float x);
 }
 
 class Matrix4

@@ -24,11 +24,14 @@ namespace Rasterizer
 	void DrawVerticalLine(const Point4& p1, const Point4& p2, const Color col);
 	void DrawHorizontalLine(const Point4& p1, const Point4& p2, const Color col);
 	void DrawDiagonalLine(const Point4& p1, const Point4& p2, const Color col);
+
 	//Draw Triangle
+	bool DetermineCase(float y0, float y1, float y2, int& t, int& m, int& b);
+	void DrawTriangle(const Point4& vertex1, const Point4& vertex2, const Point4& vertex3, const Color col);
+
 
 	Point4 ModelToView(const Matrix4& viewMtx, const Matrix4& modelMtx, const Matrix4& persepcMtx, const Point4& point);
 
-
 	//Draw Objects
-	void DrawObjects(int wWidth, int wHeight);
+	void DrawObjects(int wWidth, int wHeight, bool drawLines);
 };

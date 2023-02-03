@@ -52,6 +52,15 @@ namespace Utils //Extra utils that can help
 
 		return x;
 	}
+
+	int Ceiling(float x)
+	{
+		return x+1;
+	}
+	int Floor(float x)
+	{
+		return x;
+	}
 }
 
 

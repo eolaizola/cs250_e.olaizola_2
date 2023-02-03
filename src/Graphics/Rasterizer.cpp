@@ -2,6 +2,7 @@
 #include "..\MathLib/MathUtilities.h"
 #include "..\FrameBuffer.h"
 #include "..\cs250Parser.h"
+#include <iostream>
 
 void Rasterizer::DrawLine(const Point4& p1, const Point4& p2, const Color col)
 {
@@ -71,7 +72,6 @@ void Rasterizer::DrawLine(const Point4& p1, const Point4& p2, const Color col)
 			}
 		}
 	}
-	
 	else
 	{
 		int x = Utils::Round(p1.x);
@@ -147,10 +147,58 @@ void Rasterizer::DrawDiagonalLine(const Point4& p1, const Point4& p2, const Colo
 	}
 }
 
-void Rasterizer::DrawObjects(int wWidth, int wHeight)
+void Rasterizer::DrawTriangle(const Point4& vertex1, const Point4& vertex2, const Point4& vertex3, const Color col)
 {
-	Color col(0,0,0);
+	int TOP, MID, BOT;
+	bool midIsleft = DetermineCase(vertex1.y, vertex2.y, vertex3.y, TOP, MID, BOT);
+	
+	const Point4* vtx[3] = { &vertex1,&vertex2,&vertex3 };
+	
+	float minvTB = (vtx[BOT]->x - vtx[TOP]->x) / (vtx[BOT]->y - vtx[TOP]->y);
+	float minvTM = (vtx[MID]->x - vtx[TOP]->x) / (vtx[MID]->y - vtx[TOP]->y);
+	float minvMB = (vtx[BOT]->x - vtx[MID]->x) / (vtx[BOT]->y - vtx[MID]->y);
+	
+	
+	int yStart = Utils::Round(vtx[TOP]->y);
+	int yEnd = Utils::Round(vtx[MID]->y);
+	
+	float xL = (vtx[TOP]->x);
+	float xR = (vtx[TOP]->x);
+	
+	float slopeL = midIsleft ? minvTM : minvTB;
+	float slopeR = midIsleft ? minvTB : minvTM;
+	
+	for (int i = 0; i < 2; i++)
+	{
+		for (int y = yStart; y > yEnd; y--)
+		{
+			for (int x = Utils::Round(xL); x < Utils::Round(xR); x++)
+			{
+				FrameBuffer::SetPixel(x, y, col.r, col.g, col.b);
+			}
+	
+			xL -= slopeL;
+			xR -= slopeR;
+		}
+		yStart = Utils::Round(vtx[MID]->y);
+		yEnd = Utils::Round(vtx[BOT]->y);
+	
+		if (midIsleft)
+		{
+			xL = vtx[MID]->x;
+		}
+		else
+		{
+			xR = vtx[MID]->x;
+		}
+	
+		slopeL = midIsleft ? minvMB : minvTB;
+		slopeR = midIsleft ? minvTB : minvMB;
+	}
+}
 
+void Rasterizer::DrawObjects(int wWidth, int wHeight, bool drawLines)
+{
 	Matrix4 rot;
 	Matrix4 mtx;
 	Matrix4 scale;
@@ -177,11 +225,6 @@ void Rasterizer::DrawObjects(int wWidth, int wHeight)
 	{
 		mtx.Identity();
 
-		////Take the transform matrix of the object
-		//scale.ScaleMatrix((*obj).sca.x, (*obj).sca.y, (*obj).sca.z);
-		//trans.TranslationMatrix((*obj).pos.x, (*obj).pos.y, (*obj).pos.z);
-		//mtx = trans * scale;
-
 		mtx = (*obj).mWorldTransform;
 
 		int j = 0;
@@ -192,20 +235,70 @@ void Rasterizer::DrawObjects(int wWidth, int wHeight)
 			point2 = (*shap).vertices[(*it).indices[1]];
 			point3 = (*shap).vertices[(*it).indices[2]];
 
-			//Ttransform model to viewport
+			//Transform model to viewport
 			point1 = ModelToView(view, mtx, pers, point1);
 			point2 = ModelToView(view, mtx, pers, point2);
 			point3 = ModelToView(view, mtx, pers, point3);
 
-			col.r = (*shap).colors[j].r;
-			col.g = (*shap).colors[j].g;
-			col.b = (*shap).colors[j].b;
+			Color col((*shap).colors[j].r, (*shap).colors[j].g, (*shap).colors[j].b);
 
-			DrawLine(point1, point2, col);
-			DrawLine(point2, point3, col);
-			DrawLine(point3, point1, col);
+			if(drawLines)
+			{
+				DrawLine(point1, point2, col);
+				DrawLine(point2, point3, col);
+				DrawLine(point3, point1, col);
+			}
+			else
+				DrawTriangle(point3, point2, point1, col);
 		}
 	}
+}
+
+bool Rasterizer::DetermineCase(float y0, float y1, float y2, int& t, int& m, int& b)
+{
+	if(y0 <= y2 && y2 <= y1)
+	{
+		t = 1;
+		m = 2;
+		b = 0;
+		return true;
+	}
+	else if(y0 <= y1 && y1 <= y2)
+	{
+		t = 2;
+		m = 1;
+		b = 0;
+		return false;
+	}
+	else if(y1 <= y0 && y0 <= y2)
+	{
+		t = 2;
+		m = 0;
+		b = 1;
+		return true;
+	}
+	else if(y1 <= y2 && y2 <= y0)
+	{
+		t = 0;
+		m = 2;
+		b = 1;
+		return false;
+	}
+	else if(y2 <= y1 && y1 <= y0)
+	{
+		t = 0;
+		m = 1;
+		b = 2;
+		return true;
+	}
+	else if(y2 <= y0 && y0 <= y1)
+	{
+		t = 1;
+		m = 0;
+		b = 2;
+		return false;
+	}
+	return true;
 }
 
 

@@ -8,6 +8,7 @@ int main()
 {
     const int WIDTH  = 1280;
     const int HEIGHT = 720;
+    bool mWireframe = false;
 
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "SFML works!");
 
@@ -39,6 +40,11 @@ int main()
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
             window.close();
+        
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
+            mWireframe = true;
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
+            mWireframe = false;
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
         {
@@ -52,7 +58,7 @@ int main()
         int      time    = static_cast<int>(elapsed.asSeconds());
 
 
-        Rasterizer::DrawObjects(WIDTH, HEIGHT);
+        Rasterizer::DrawObjects(WIDTH, HEIGHT, mWireframe);
 
         // Show image on screen
         FrameBuffer::ConvertFrameBufferToSFMLImage(image);
