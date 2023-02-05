@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "CS250Parser.h"
 #include "Graphics/Rasterizer.h"
+#include "Input/Input.h"
 #include <iostream>
 #include <fstream>
 
@@ -276,3 +277,4 @@ void CS250Parser::UpdateObjects()
         }
     }
 }
+

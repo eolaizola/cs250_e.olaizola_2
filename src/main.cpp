@@ -3,6 +3,7 @@
 #include "FrameBuffer.h"
 #include "cs250Parser.h"
 #include "Graphics/Rasterizer.h"
+#include "Input/Input.h"
 
 int main()
 {
@@ -58,6 +59,7 @@ int main()
         int      time    = static_cast<int>(elapsed.asSeconds());
 
 
+        Input::UpdateInput();
         Rasterizer::DrawObjects(WIDTH, HEIGHT, mWireframe);
 
         // Show image on screen

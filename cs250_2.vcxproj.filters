@@ -25,6 +25,9 @@
     <Filter Include="src\Graphics\Rasterizer">
       <UniqueIdentifier>{606ad2bd-b7d6-4188-ae48-b040c1b1aa04}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Input">
+      <UniqueIdentifier>{9792f70e-3dc9-4495-9cd2-e0ac3b6bfd6a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\FrameBuffer.cpp">
@@ -48,6 +51,9 @@
     <ClCompile Include="src\Graphics\Rasterizer.cpp">
       <Filter>src\Graphics\Rasterizer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Input\Input.cpp">
+      <Filter>src\Input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\FrameBuffer.h">
@@ -70,6 +76,9 @@
     </ClInclude>
     <ClInclude Include="src\Graphics\Rasterizer.h">
       <Filter>src\Graphics\Rasterizer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Input\Input.h">
+      <Filter>src\Input</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
