@@ -14,6 +14,7 @@ Creation date: 01/09/2023
 
 #include "Matrix4.h"
 #include "MathUtilities.h"
+#include "../Utils/cs250Parser.h"
 #include <stdexcept>
 
 namespace Utils //Extra utils that can help
@@ -556,4 +557,30 @@ void Matrix4::ScaleMatrix(float x, float y, float z)
 	m[0][0] = x;
 	m[1][1] = y;
 	m[2][2] = z;
+}
+
+Matrix4 Matrix4::GetPerspectiveMatrix()
+{
+	Matrix4 mtx;
+
+	mtx.ScaleMatrix(CS250Parser::focal, CS250Parser::focal, CS250Parser::focal);
+	mtx.m[3][2] = -1;
+
+	return mtx;
+}
+
+Matrix4 Matrix4::GetViewportMatrix(int wWidth, int wHeight)
+{
+	int vWidth = CS250Parser::right - CS250Parser::left;
+	int vHeight = CS250Parser::top - CS250Parser::bottom;
+
+	Matrix4 mtx;
+
+	mtx.m[0][0] = wWidth / vWidth;
+	mtx.m[0][3] = wWidth / 2;
+
+	mtx.m[1][1] = -wHeight / vHeight;
+	mtx.m[1][3] = wHeight / 2;
+
+	return mtx;
 }

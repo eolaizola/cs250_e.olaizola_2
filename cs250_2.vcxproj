@@ -19,24 +19,24 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\FrameBuffer.cpp" />
-    <ClCompile Include="src\Graphics\Rasterizer.cpp" />
+    <ClCompile Include="src\Graphics\FrameBuffer\FrameBuffer.cpp" />
+    <ClCompile Include="src\Graphics\Rasterizer\Rasterizer.cpp" />
     <ClCompile Include="src\Input\Input.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\cs250Parser.cpp" />
     <ClCompile Include="src\MathLib\Matrix4.cpp" />
     <ClCompile Include="src\MathLib\Point4.cpp" />
     <ClCompile Include="src\MathLib\Vector4.cpp" />
+    <ClCompile Include="src\Utils\cs250Parser.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\FrameBuffer.h" />
-    <ClInclude Include="src\cs250Parser.h" />
-    <ClInclude Include="src\Graphics\Rasterizer.h" />
+    <ClInclude Include="src\Graphics\FrameBuffer\FrameBuffer.h" />
+    <ClInclude Include="src\Graphics\Rasterizer\Rasterizer.h" />
     <ClInclude Include="src\Input\Input.h" />
     <ClInclude Include="src\MathLib\MathUtilities.h" />
     <ClInclude Include="src\MathLib\Matrix4.h" />
     <ClInclude Include="src\MathLib\Point4.h" />
     <ClInclude Include="src\MathLib\Vector4.h" />
+    <ClInclude Include="src\Utils\cs250Parser.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

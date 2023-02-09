@@ -1,96 +1,88 @@
 #include "Input.h"
-
-#include "../cs250Parser.h"
+#include "../MathLib/Matrix4.h"
 #include <SFML/Graphics.hpp>
 
 void Input::UpdateInput()
 {
+	if(!mInitialzied)
+	{
+		//Initialize one time
+		//To not search them all the time
+		InitInput();
+		mInitialzied = true;
+	}
+
 	sf::Clock clock;
-	auto body = GetObject("body");
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
-		auto wheel1 = GetObject("wheel1");
-		auto wheel2 = GetObject("wheel2");
-		auto wheel3 = GetObject("wheel3");
-		auto wheel4 = GetObject("wheel4");
-
-
 		Matrix4 roty;
-		roty.RotationMatrix(1, body->rot.y, 1);
+		roty.RotationMatrix(1, mBody->rot.y, 1);
 		
 		Vector4 vec(0, 0, 1, 0);
 		Matrix4 mtx;
-		mtx.RotationMatrix(1,body->rot.y, 1);
+		mtx.RotationMatrix(1,mBody->rot.y, 1);
 		vec = mtx * vec;
 
-		body->pos += vec * 0.3f;
-		wheel1->rot.x += 0.5f;
-		wheel2->rot.x += 0.5f;
-		wheel3->rot.x += 0.5f;
-		wheel4->rot.x += 0.5f;
+		mBody->pos += vec * 0.4f;
+		mWheel1->rot.x += 0.5f;
+		mWheel2->rot.x += 0.5f;
+		mWheel3->rot.x += 0.5f;
+		mWheel4->rot.x += 0.5f;
 		
-		body->mTranslation.TranslationMatrix(body->pos.x, body->pos.y, body->pos.z);
+		mBody->mTranslation.TranslationMatrix(mBody->pos.x, mBody->pos.y, mBody->pos.z);
 
-		wheel1->mRotation.RotationMatrix(wheel1->rot.x, wheel1->rot.y, wheel1->rot.z);
-		wheel2->mRotation.RotationMatrix(wheel2->rot.x, wheel2->rot.y, wheel2->rot.z);
-		wheel3->mRotation.RotationMatrix(wheel3->rot.x, wheel3->rot.y, wheel3->rot.z);
-		wheel4->mRotation.RotationMatrix(wheel4->rot.x, wheel4->rot.y, wheel4->rot.z);
+		mWheel1->mRotation.RotationMatrix(mWheel1->rot.x, mWheel1->rot.y, mWheel1->rot.z);
+		mWheel2->mRotation.RotationMatrix(mWheel2->rot.x, mWheel2->rot.y, mWheel2->rot.z);
+		mWheel3->mRotation.RotationMatrix(mWheel3->rot.x, mWheel3->rot.y, mWheel3->rot.z);
+		mWheel4->mRotation.RotationMatrix(mWheel4->rot.x, mWheel4->rot.y, mWheel4->rot.z);
 
-		UpdateHierarchy(wheel1);
-		UpdateHierarchy(wheel2);
-		UpdateHierarchy(wheel3);
-		UpdateHierarchy(wheel4);
+		UpdateHierarchy(mWheel1);
+		UpdateHierarchy(mWheel2);
+		UpdateHierarchy(mWheel3);
+		UpdateHierarchy(mWheel4);
 	}
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
-		body->rot.y += 0.5f;
+		mBody->rot.y += 0.5f;
 
-		body->mRotation.RotationMatrix(body->rot.x, body->rot.y, body->rot.z);
+		mBody->mRotation.RotationMatrix(mBody->rot.x, mBody->rot.y, mBody->rot.z);
 	}
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
-		body->rot.y -= 0.5f;
+		mBody->rot.y -= 0.5f;
 
-		body->mRotation.RotationMatrix(body->rot.x, body->rot.y, body->rot.z);
+		mBody->mRotation.RotationMatrix(mBody->rot.x, mBody->rot.y, mBody->rot.z);
 	}
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
 	{
-		auto turret = GetObject("turret");
+		mTurret->rot.y += 0.5f;
 
-		turret->rot.y += 0.5f;
-
-		turret->mRotation.RotationMatrix(turret->rot.x, turret->rot.y, turret->rot.z);
-		UpdateHierarchy(turret);
+		mTurret->mRotation.RotationMatrix(mTurret->rot.x, mTurret->rot.y, mTurret->rot.z);
+		UpdateHierarchy(mTurret);
 	}
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::E))
 	{
-		auto turret = GetObject("turret");
+		mTurret->rot.y -= 0.5f;
 
-		turret->rot.y -= 0.5f;
-
-		turret->mRotation.RotationMatrix(turret->rot.x, turret->rot.y, turret->rot.z);
-		UpdateHierarchy(turret);
+		mTurret->mRotation.RotationMatrix(mTurret->rot.x, mTurret->rot.y, mTurret->rot.z);
+		UpdateHierarchy(mTurret);
 	}
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 	{
-		auto joint = GetObject("joint");
+		mJoint->rot.x -= 0.5f;
 
-		joint->rot.x -= 0.5f;
-
-		joint->mRotation.RotationMatrix(joint->rot.x, joint->rot.y, joint->rot.z);
-		UpdateHierarchy(joint);
+		mJoint->mRotation.RotationMatrix(mJoint->rot.x, mJoint->rot.y, mJoint->rot.z);
+		UpdateHierarchy(mJoint);
 	}
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::F))
 	{
-		auto joint = GetObject("joint");
+		mJoint->rot.x += 0.5f;
 
-		joint->rot.x += 0.5f;
-
-		joint->mRotation.RotationMatrix(joint->rot.x, joint->rot.y, joint->rot.z);
-		UpdateHierarchy(joint);
+		mJoint->mRotation.RotationMatrix(mJoint->rot.x, mJoint->rot.y, mJoint->rot.z);
+		UpdateHierarchy(mJoint);
 	}
 
-	UpdateHierarchy(body);
+	UpdateHierarchy(mBody);
 	CS250Parser::UpdateObjects();
 }
 
@@ -106,8 +98,21 @@ CS250Parser::Transform* Input::GetObject(const std::string& name)
 
 void Input::UpdateHierarchy(CS250Parser::Transform* obj)
 {
-	//obj->mTranslation.TranslationMatrix(obj->pos.x, obj->pos.y, obj->pos.z);
+	if (!obj)
+		return;
 
 	obj->mSharedTransform = obj->mTranslation * obj->mRotation;
 	obj->mWorldTransform = obj->mSharedTransform * obj->mScale;
+}
+
+void Input::InitInput()
+{
+	mBody = GetObject("body");
+	mTurret = GetObject("turret");
+	mGun = GetObject("gun");
+	mJoint = GetObject("joint");
+	mWheel1 = GetObject("wheel1");
+	mWheel2 = GetObject("wheel2");
+	mWheel3 = GetObject("wheel3");
+	mWheel4 = GetObject("wheel4");
 }

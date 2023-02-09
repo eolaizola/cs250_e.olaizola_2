@@ -1,9 +1,9 @@
 #include <SFML/Graphics.hpp>
 
-#include "FrameBuffer.h"
-#include "cs250Parser.h"
-#include "Graphics/Rasterizer.h"
-#include "Input/Input.h"
+#include "../src/Graphics/FrameBuffer/FrameBuffer.h"
+#include "../src/Utils/cs250Parser.h"
+#include "../src/Graphics/Rasterizer/Rasterizer.h"
+#include "../src/Input/Input.h"
 
 int main()
 {
@@ -71,7 +71,7 @@ int main()
         window.draw(sprite);
         window.display();
     }
-    
+
     FrameBuffer::Free();
 
     return 0;

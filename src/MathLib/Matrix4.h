@@ -93,6 +93,10 @@ class Matrix4
     void TranslationMatrix(float x, float y, float z);
     void ScaleMatrix(float x, float y, float z);
 
+    //Utils for matrices
+    Matrix4 GetPerspectiveMatrix();
+    Matrix4 GetViewportMatrix(int wWidth, int wHeight);
+
     // Already implemented, simple print function
     void Print(void) const
     {
