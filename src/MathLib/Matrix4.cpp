@@ -41,26 +41,41 @@ namespace Utils //Extra utils that can help
 		return total;
 	}
 
+	/*
+	*
+	* \brief Rounds the number given
+	*
+	*/
 	int Round(float x)
 	{
-		int integer = x;
+		int integer = static_cast<int>(x);
 		float fl = x - integer;
 
 		if (fl < 0.5f)
-			x = integer;
+			x = static_cast<float>(integer);
 		else
-			x = ++integer;
+			x = static_cast<float>(++integer);
 
-		return x;
+		return static_cast<int>(x);
 	}
-
+	/*
+	*
+	* \brief Rounds the number to ceiling
+	*
+	*/
 	int Ceiling(float x)
 	{
-		return x+1;
+		return static_cast<int>(x+1);
 	}
+
+	/*
+	*
+	* \brief Rounds the number to floor
+	*
+	*/
 	int Floor(float x)
 	{
-		return x;
+		return static_cast<int>(x);
 	}
 }
 
@@ -512,6 +527,11 @@ void Matrix4::Identity(void)
 	}
 }
 
+/*
+*
+* \brief Commputes the rotation matrix (Rx Ry Rz) and set it to this
+*
+*/
 void Matrix4::RotationMatrix(float x, float y, float z)
 {
 	Matrix4 Rot_x;
@@ -522,65 +542,100 @@ void Matrix4::RotationMatrix(float x, float y, float z)
 	Rot_y.Identity();
 	Rot_z.Identity();
 
-	x = (x * Utils::pi) / 180;
-	y = (y * Utils::pi) / 180;
-	z = (z * Utils::pi) / 180;
+	x = (x * Utils::pi) / 180.f;
+	y = (y * Utils::pi) / 180.f;
+	z = (z * Utils::pi) / 180.f;
 
+	//Rotatio on x
+	Rot_x.m[1][1] = cosf(x);
+	Rot_x.m[1][2] = -sinf(x);
+	Rot_x.m[2][1] = sinf(x);
+	Rot_x.m[2][2] = cosf(x);
 
-	Rot_x.m[1][1] = cos(x);
-	Rot_x.m[1][2] = -sin(x);
-	Rot_x.m[2][1] = sin(x);
-	Rot_x.m[2][2] = cos(x);
+	//Rotation on y
+	Rot_y.m[0][0] = cosf(y);
+	Rot_y.m[2][0] = -sinf(y);
+	Rot_y.m[2][2] = cosf(y);
+	Rot_y.m[0][2] = sinf(y);
 
-	Rot_y.m[0][0] = cos(y);
-	Rot_y.m[2][0] = -sin(y);
-	Rot_y.m[2][2] = cos(y);
-	Rot_y.m[0][2] = sin(y);
+	//Rotation on z
+	Rot_z.m[0][0] = cosf(z);
+	Rot_z.m[1][0] = sinf(z);
+	Rot_z.m[0][1] = -sinf(z);
+	Rot_z.m[1][1] = cosf(z);
 
-	Rot_z.m[0][0] = cos(z);
-	Rot_z.m[1][0] = sin(z);
-	Rot_z.m[0][1] = -sin(z);
-	Rot_z.m[1][1] = cos(z);
-
+	//Rx * Ry * Rz
 	*this = Rot_x * Rot_y * Rot_z;
 }
 
+/*
+*
+* \brief Commputes the translation matrix and set it to this
+*
+*/
 void Matrix4::TranslationMatrix(float x, float y, float z)
 {
+	Identity();
+
 	m[0][3] = x;
 	m[1][3] = y;
 	m[2][3] = z;
 }
 
+/*
+*
+* \brief Commputes the scale matrix and set it to this
+*
+*/
 void Matrix4::ScaleMatrix(float x, float y, float z)
 {
+	Identity();
 	m[0][0] = x;
 	m[1][1] = y;
 	m[2][2] = z;
 }
 
+/*
+*
+* \brief Commputes the perspective matrix and rerturn a copy
+*
+*/
 Matrix4 Matrix4::GetPerspectiveMatrix()
 {
 	Matrix4 mtx;
+	float Swidth = CS250Parser::right - CS250Parser::left;
+	float Sheight = CS250Parser::top - CS250Parser::bottom;
+	auto d = CS250Parser::focal;
+	auto far = CS250Parser::farPlane;
+	auto near = CS250Parser::nearPlane;
 
-	mtx.ScaleMatrix(CS250Parser::focal, CS250Parser::focal, CS250Parser::focal);
+	mtx.m[0][0] = d / Swidth;
+	mtx.m[1][1] = d / Sheight;
+	mtx.m[2][2] = -(far + near)/(near - far);
+	mtx.m[2][3] = -(2.f*near*far)/(near - far);
 	mtx.m[3][2] = -1;
 
 	return mtx;
 }
 
+/*
+*
+* \brief Commputes the viewport matrix and rerturn a copy
+*
+*/
 Matrix4 Matrix4::GetViewportMatrix(int wWidth, int wHeight)
 {
-	int vWidth = CS250Parser::right - CS250Parser::left;
-	int vHeight = CS250Parser::top - CS250Parser::bottom;
+	//viewport width/height
+	float vWidth = CS250Parser::right - CS250Parser::left;
+	float vHeight = CS250Parser::top - CS250Parser::bottom;
 
 	Matrix4 mtx;
 
-	mtx.m[0][0] = wWidth / vWidth;
-	mtx.m[0][3] = wWidth / 2;
+	mtx.m[0][0] = wWidth / 2.f;
+	mtx.m[0][3] = wWidth / 2.f;
 
-	mtx.m[1][1] = -wHeight / vHeight;
-	mtx.m[1][3] = wHeight / 2;
+	mtx.m[1][1] = -wHeight / 2.f;
+	mtx.m[1][3] = wHeight / 2.f;
 
 	return mtx;
 }

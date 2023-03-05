@@ -278,7 +278,7 @@ Vector4 Vector4::Cross(const Vector4& rhs) const
 */
 float Vector4::Length(void) const
 {
-	return sqrt((x * x) + (y * y) + (z * z) + (w * w));
+	return sqrtf((x * x) + (y * y) + (z * z) + (w * w));
 }
 
 /*

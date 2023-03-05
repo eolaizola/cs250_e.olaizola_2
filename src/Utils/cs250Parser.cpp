@@ -1,8 +1,20 @@
+/* ---------------------------------------------------------------------------------------------------------
+Copyright (C) 2023 DigiPen Institute of Technology.
+Reproduction or disclosure of this file or its contents without the prior written
+consent of DigiPen Institute of Technology is prohibited.
+
+Project: cs250_e.olaizola_2
+Filename: cs250Parser.cpp
+
+Author: Eritz 0laizola
+Login: e.olaizola
+StudentID:  540001219
+Creation date: 01/30/2023
+----------------------------------------------------------------------------------------------------------*/
 #include <SFML/Graphics.hpp>
 #include "CS250Parser.h"
 #include "../Graphics/Rasterizer/Rasterizer.h"
 #include "../Input/Input.h"
-#include <iostream>
 #include <fstream>
 
 float   CS250Parser::left;
@@ -22,6 +34,11 @@ std::vector<CS250Parser::Shape> CS250Parser::shapes;
 
 std::vector<CS250Parser::Transform> CS250Parser::objects;
 
+/*
+* 
+* \brief Loads data from a txt file
+* 
+*/
 void CS250Parser::LoadDataFromFile(const char * filename)
 {
     std::ifstream in(filename);
@@ -206,11 +223,13 @@ void CS250Parser::LoadDataFromFile(const char * filename)
     }
 }
 
+/*
+*
+* \brief Unoads data from a txt file
+*
+*/
 void CS250Parser::UnloadData()
 {
-    if (objects.size())
-        std::cout << "Clearing..." << objects.size() << " Objects" << std::endl;
-
     //Reset all the values
     left = 0;
     right = 0;
@@ -226,17 +245,17 @@ void CS250Parser::UnloadData()
     up.Zero();
     shapes.clear();
     objects.clear();
-
-    std::cout << std::endl;
-
-    if (!objects.size())
-        std::cout << "Cleared...Now: " << objects.size() << " Objects" << std::endl;
-    else
-        std::cout << "Error: " << objects.size() << " Some objects didn' unload correctly" << std::endl;
 }
 
+/*
+*
+* \brief Updates the objects when neccesary
+*
+*/
 void CS250Parser::UpdateObjects()
 {
+
+    //NOTO: NEEDS TO UPDATE THE POSITION
     for (auto child = objects.begin(); child != objects.end(); child++)
     {
         for(auto parent = objects.begin(); parent != objects.end(); parent++)
@@ -246,9 +265,21 @@ void CS250Parser::UpdateObjects()
             {
                 (*child).mSharedTransform = (*parent).mSharedTransform * (*child).mTranslation * (*child).mRotation;
                 (*child).mWorldTransform = (*child).mSharedTransform * (*child).mScale;
+
+                //Update the forward
+                Vector4 vec(0, 0, 1, 0);
+                Matrix4 mtx;
+                mtx.RotationMatrix((*child).rot.x, (*child).rot.y, (*child).rot.z);
+                (*child).mForward = mtx * (*parent).mRotation * vec;
+
                 break;
             }
         }
+
+        //Take the position
+        (*child).pos.x = (*child).mSharedTransform.m[0][3];
+        (*child).pos.y = (*child).mSharedTransform.m[1][3];
+        (*child).pos.z = (*child).mSharedTransform.m[2][3];
     }
 }
 

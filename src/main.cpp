@@ -1,9 +1,24 @@
+/* ---------------------------------------------------------------------------------------------------------
+Copyright (C) 2023 DigiPen Institute of Technology.
+Reproduction or disclosure of this file or its contents without the prior written
+consent of DigiPen Institute of Technology is prohibited.
+
+Project: cs250_e.olaizola_2
+Filename: main.cpp
+
+Author: Eritz 0laizola
+Login: e.olaizola
+StudentID:  540001219
+Creation date: 01/30/2023
+----------------------------------------------------------------------------------------------------------*/
+
 #include <SFML/Graphics.hpp>
 
 #include "../src/Graphics/FrameBuffer/FrameBuffer.h"
 #include "../src/Utils/cs250Parser.h"
 #include "../src/Graphics/Rasterizer/Rasterizer.h"
 #include "../src/Input/Input.h"
+#include "../src/Graphics/Camera/Camera.h"
 
 int main()
 {
@@ -24,7 +39,10 @@ int main()
 
     CS250Parser::LoadDataFromFile("src/input.txt");
     CS250Parser::UpdateObjects();
-
+    Input::GetInstance().InitInput();
+    Camera cam;
+    cam.UpdateCamera();
+    
     // Init the clock
     sf::Clock clock;
     while (window.isOpen())
@@ -52,15 +70,16 @@ int main()
             CS250Parser::UnloadData();
             CS250Parser::LoadDataFromFile("src/input.txt");
             CS250Parser::UpdateObjects();
+            cam.UpdateCamera();
         }
 
         // Fill framebuffer
         sf::Time elapsed = clock.getElapsedTime();
         int      time    = static_cast<int>(elapsed.asSeconds());
 
-
-        Input::UpdateInput();
-        Rasterizer::DrawObjects(WIDTH, HEIGHT, mWireframe);
+        cam.UpdateCamera();
+        Input::GetInstance().UpdateInput(cam);
+        Rasterizer::DrawObjects(WIDTH, HEIGHT, mWireframe, cam);
 
         // Show image on screen
         FrameBuffer::ConvertFrameBufferToSFMLImage(image);

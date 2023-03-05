@@ -22,6 +22,9 @@
     <Filter Include="src\Utils">
       <UniqueIdentifier>{c57d16a7-224a-48c6-b650-d585fa353ab1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Graphics\Camera">
+      <UniqueIdentifier>{a1ae926a-a19e-4945-8ca6-0cecaf5edd31}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -48,6 +51,9 @@
     <ClCompile Include="src\Graphics\Rasterizer\Rasterizer.cpp">
       <Filter>src\Graphics\Rasterizer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\Camera\Camera.cpp">
+      <Filter>src\Graphics\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Input\Input.h">
@@ -73,6 +79,9 @@
     </ClInclude>
     <ClInclude Include="src\Graphics\Rasterizer\Rasterizer.h">
       <Filter>src\Graphics\Rasterizer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Camera\Camera.h">
+      <Filter>src\Graphics\Camera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

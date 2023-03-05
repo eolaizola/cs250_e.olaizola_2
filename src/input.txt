@@ -62,12 +62,37 @@ shapes
 }
 scene
 {
-    body    box  T(0,0,-100)          R(0,0,0) S(30,25,80) None
-    turret  box  T(0,20,0)            R(0,0,0) S(25,15,25) body
-    joint   box  T(0,0,12.5)          R(0,0,0) S(0,0,0)    turret
-    gun     box  T(0,0,20)            R(0,0,0) S(5,5,40)   joint
-    wheel1  box  T(17.5,-12.5,-25.0)  R(0,0,0) S(5,20,20)  body
-    wheel2  box  T(-17.5,-12.5,-25.0) R(0,0,0) S(5,20,20)  body
-    wheel3  box  T(17.5,-12.5,25.0)   R(0,0,0) S(5,20,20)  body
-    wheel4  box  T(-17.5,-12.5,25.0)  R(0,0,0) S(5,20,20)  body
+    body      box  T(0,0,-100)          R(0,0,0) S(30,25,80)   None
+    turret    box  T(0,20,0)            R(0,0,0) S(25,15,25)   body
+    joint     box  T(0,0,12.5)          R(0,0,0) S(0,0,0)      turret
+    gun       box  T(0,0,20)            R(0,0,0) S(5,5,40)     joint
+    wheel1    box  T(17.5,-12.5,-25.0)  R(0,0,0) S(5,20,20)    body
+    wheel2    box  T(-17.5,-12.5,-25.0) R(0,0,0) S(5,20,20)    body
+    wheel3    box  T(17.5,-12.5,25.0)   R(0,0,0) S(5,20,20)    body
+    wheel4    box  T(-17.5,-12.5,25.0)  R(0,0,0) S(5,20,20)    body
+    box01     box  T(-200,0,-200)       R(0,0,0) S(10,10,10)   None
+    box02     box  T(-200,0,-100)       R(0,0,0) S(10,10,10)   None
+    box03     box  T(-200,0,0)          R(0,0,0) S(10,10,10)   None
+    box04     box  T(-200,0,100)        R(0,0,0) S(10,10,10)   None
+    box05     box  T(-200,0,200)        R(0,0,0) S(10,10,10)   None
+    box11     box  T(-100,0,-200)       R(0,0,0) S(10,10,10)   None
+    box12     box  T(-100,0,-100)       R(0,0,0) S(10,10,10)   None
+    box13     box  T(-100,0,0)          R(0,0,0) S(10,10,10)   None
+    box14     box  T(-100,0,100)        R(0,0,0) S(10,10,10)   None
+    box15     box  T(-100,0,200)        R(0,0,0) S(10,10,10)   None
+    box21     box  T(0,0,-200)          R(0,0,0) S(10,10,10)   None
+    box22     box  T(0,0,-100)          R(0,0,0) S(10,10,10)   None
+    box23     box  T(0,0,0)             R(0,0,0) S(10,10,10)   None
+    box24     box  T(0,0,100)           R(0,0,0) S(10,10,10)   None
+    box25     box  T(0,0,200)           R(0,0,0) S(10,10,10)   None
+    box31     box  T(100,0,-200)        R(0,0,0) S(10,10,10)   None
+    box32     box  T(100,0,-100)        R(0,0,0) S(10,10,10)   None
+    box33     box  T(100,0,0)           R(0,0,0) S(10,10,10)   None
+    box34     box  T(100,0,100)         R(0,0,0) S(10,10,10)   None
+    box35     box  T(100,0,200)         R(0,0,0) S(10,10,10)   None
+    box41     box  T(200,0,-200)        R(0,0,0) S(10,10,10)   None
+    box42     box  T(200,0,-100)        R(0,0,0) S(10,10,10)   None
+    box43     box  T(200,0,0)           R(0,0,0) S(10,10,10)   None
+    box44     box  T(200,0,100)         R(0,0,0) S(10,10,10)   None
+    box45     box  T(200,0,200)         R(0,0,0) S(10,10,10)   None
 }

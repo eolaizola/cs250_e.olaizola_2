@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Graphics\Camera\Camera.cpp" />
     <ClCompile Include="src\Graphics\FrameBuffer\FrameBuffer.cpp" />
     <ClCompile Include="src\Graphics\Rasterizer\Rasterizer.cpp" />
     <ClCompile Include="src\Input\Input.cpp" />
@@ -29,6 +30,7 @@
     <ClCompile Include="src\Utils\cs250Parser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Graphics\Camera\Camera.h" />
     <ClInclude Include="src\Graphics\FrameBuffer\FrameBuffer.h" />
     <ClInclude Include="src\Graphics\Rasterizer\Rasterizer.h" />
     <ClInclude Include="src\Input\Input.h" />

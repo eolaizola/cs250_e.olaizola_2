@@ -1,3 +1,16 @@
+/* ---------------------------------------------------------------------------------------------------------
+Copyright (C) 2023 DigiPen Institute of Technology.
+Reproduction or disclosure of this file or its contents without the prior written
+consent of DigiPen Institute of Technology is prohibited.
+
+Project: cs250_e.olaizola_2
+Filename: cs250Parser.h
+
+Author: Eritz 0laizola
+Login: e.olaizola
+StudentID:  540001219
+Creation date: 01/30/2023
+----------------------------------------------------------------------------------------------------------*/
 #pragma once
 
 #include "../MathLib/Point4.h"
@@ -60,6 +73,8 @@ class CS250Parser
         Matrix4 mParentTransform;
         Matrix4 mWorldTransform;
         Matrix4 mSharedTransform;
+
+        Vector4 mForward;
     };
     static std::vector<Transform> objects;
 };
